@@ -1,7 +1,7 @@
 <h2>Weclome to the Automation-Project.</h2>
 <h3>This framework serves as a way to Test any Webpage.</h3>
 <h4>The current focus of this project is to Test my webPage: 
-<a href="georgeveropoulos.com">georgeveropoulos.com</a>
+<a href="https://www.georgeveropoulos.com/">georgeveropoulos.com</a>
 <p>Framework contains:</p>
 <ul>
 <li>TestNG: Test execution and asserts.</li>
