@@ -63,15 +63,6 @@ public class TestBase {
         WebDriverRunner.getWebDriver().manage().window().maximize();
     }
 
-    private ChromeOptions chromeOptions() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--remote-allow-origins=*");
-        chromeOptions.setCapability("goog:chromeOptions", Map.of("disable-popup-blocking", false));
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("plugins.plugins_disabled", new String[]{"Chrome PDF Viewer"});
-        chromeOptions.setExperimentalOption("prefs", prefs);
-        return chromeOptions;
-    }
 
     @AfterMethod(alwaysRun = true)
     public void afterMethod(ITestResult result) {
