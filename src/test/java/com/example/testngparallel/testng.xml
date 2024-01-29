@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="TestSuite" parallel="classes" verbose="2" thread-count="4">
+    <test name="0" preserve-order="true">
+        <method-selectors>
+            <method-selector>
+                <script language="beanshell">
+                    <![CDATA[whatGroup = System.getProperty("groupToRun");
+                (groups.containsKey(whatGroup) || testngMethod.getGroups().length ==0);
+                ]]>
+                </script>
+            </method-selector>
+        </method-selectors>
+        <packages>
+            <package name="com.example.testngparallel.tests"/>
+        </packages>
+    </test>
+</suite>
