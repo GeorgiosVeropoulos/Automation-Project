@@ -12,7 +12,6 @@
 </ul>
 
 <p>Project supports parallel execution of TestCases with independent logging on the ExtentReport</p>
-
 <h3>Quick introduction</h3>
 <ul>
     <h2><a href="https://github.com/GeorgiosVeropoulos/Automation-Project/blob/main/src/test/java/com/example/testngparallel/testbase/TestBase.java" target="_blank">TestBase.java</a></h2>

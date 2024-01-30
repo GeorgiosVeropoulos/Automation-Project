@@ -42,6 +42,14 @@ public class Browser {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--remote-allow-origins=*");
         chromeOptions.setCapability("goog:chromeOptions", Map.of("disable-popup-blocking", false));
+        boolean runRemote = Boolean.parseBoolean(System.getProperty("runRemote"));
+        if (runRemote) {
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+            chromeOptions.addArguments("--headless");
+        }
+
+
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("plugins.plugins_disabled", new String[]{"Chrome PDF Viewer"});
         chromeOptions.setExperimentalOption("prefs", prefs);
