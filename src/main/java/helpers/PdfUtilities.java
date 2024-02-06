@@ -45,8 +45,10 @@ public class PdfUtilities {
         return "";
     }
 
+
     public static void verifyPdfContainsValue(String pdfFilePath, String value) {
         String pdfContent = getTextFromPdf(pdfFilePath);
         Assert.assertTrue(pdfContent.contains(value));
+
     }
 }

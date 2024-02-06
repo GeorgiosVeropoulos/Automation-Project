@@ -7,35 +7,35 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
+import com.example.testngparallel.assertionutils.AssertionListener;
 import com.example.testngparallel.pages.pagefactory.PageFactory;
 import helpers.ScreenshotReport;
 import lombok.extern.log4j.Log4j2;
 import managers.ConfigManager;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 import testrail.TestRailListener;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 import static helpers.CustomColorOnConsole.*;
 import static com.codeborne.selenide.Selenide.open;
 
 @Log4j2
-@Listeners({TestRailListener.class})
+@Listeners({TestRailListener.class, AssertionListener.class})
 public class TestBase {
 
     private static ExtentReports extent;
     private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
+    private static ThreadLocal<String> customAssertionMessage = new ThreadLocal<>();
     public PageFactory page = new PageFactory();
+    private SoftAssert softAssert = new SoftAssert();
 
 
 
@@ -49,7 +49,7 @@ public class TestBase {
         extent.attachReporter(htmlReporter);
     }
 
-    @BeforeMethod()
+    @BeforeMethod(alwaysRun = true)
     public void beforeMethod(ITestContext context, Method method) {
         //using reflection we can fetch the name of the parent class
         String className = method.getDeclaringClass().getSimpleName();
@@ -61,12 +61,26 @@ public class TestBase {
         browser.setUpBrowser(Browser.BrowserType.CHROME);
         open("about:blank");
         WebDriverRunner.getWebDriver().manage().window().maximize();
+        softAssert = new SoftAssert();
     }
 
 
     @AfterMethod(alwaysRun = true)
-    public void afterMethod(ITestResult result) {
+    public void afterMethod(ITestResult result, Method method) {
         String resultString = "Test finished with result: ";
+
+        try {
+            softAssert.assertAll();
+        } catch (AssertionError e) {
+            String softAssertFailureMessage = "Soft assert failure(s) in the test.";
+            log.info(setColor(softAssertFailureMessage, Color.RED));
+            result.setStatus(2);
+            getExtentTest().fail(softAssertFailureMessage);
+            logScreenShot();
+            extent.flush();
+            throw e; // This line ensures that the test fails in TestNG if soft asserts fail
+        }
+
         if (result.getStatus() == ITestResult.FAILURE || result.getStatus() == ITestResult.CREATED) {
             test.get().fail(result.getThrowable());
             resultString = resultString + getExtentTest().getStatus().toString().toUpperCase();
@@ -79,7 +93,7 @@ public class TestBase {
             log.info(setColor(resultString, Color.GREEN));
         }
         logScreenShot();
-         extent.flush();
+        extent.flush();
     }
 
     @AfterClass(alwaysRun = true)
@@ -87,6 +101,7 @@ public class TestBase {
         test.remove();
         log.info("Closing Browser!");
         Selenide.closeWebDriver();
+
     }
 
     public static void logMessage(String message) {
@@ -116,7 +131,22 @@ public class TestBase {
         getExtentTest().log(Status.INFO, MarkupHelper.createLabel(fileLink, ExtentColor.BLUE));
     }
 
-    public static void assertTrue(boolean b, String message) {
+    public void assertTrue(boolean b) {
+        try {
+            Assert.assertTrue(b);
+            getExtentTest().pass("assertion passed!");
+        } catch (AssertionError e) {
+            getExtentTest().fail("assertion failed!");
+            throw new AssertionError(e);
+        }
+
+    }
+
+    public SoftAssert getSoftAssert() {
+        return softAssert;
+    }
+
+    public void assertTrue(boolean b, String message) {
         try {
             Assert.assertTrue(b, message);
             getExtentTest().pass(message);
@@ -124,10 +154,9 @@ public class TestBase {
             getExtentTest().fail(message);
             throw new AssertionError(e);
         }
-
     }
 
-    public static void logStep(String stepName, String stepContext) {
+    public void logStep(String stepName, String stepContext) {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         StackTraceElement caller = stackTrace[2]; // Index 2 is the caller's element
         String className = caller.getClassName();
@@ -142,7 +171,7 @@ public class TestBase {
         ScreenshotReport.logScreenShot(getExtentTest());
     }
 
-    private static ExtentTest getExtentTest() {
+    public static ExtentTest getExtentTest() {
         return test.get();
     }
 
