@@ -12,9 +12,10 @@ public class C4_VerifyCVContainsValuesTest extends TestBase {
         page.loadPage.goToMainPage();
 
         logStep("Step 1", "Download pdf");
-        String fileName = page.mainPage.downloadCV();
+        String fileName = page.mainPage.downloadCVwithHTTP();
 
         logStep("Step 2", "Verify pdf contains the value Georgios");
+
         PdfUtilities.verifyPdfContainsValue(fileName, "Georgios");
     }
 }

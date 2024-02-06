@@ -3,10 +3,13 @@ package com.example.testngparallel.pages;
 import browser.Element;
 import com.codeborne.selenide.*;
 import com.example.testngparallel.pages.page.Page;
+import constants.TestConstants;
 import helpers.PdfUtilities;
 import helpers.Sleeper;
 import org.openqa.selenium.By;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +77,10 @@ public class MainPage extends Page {
         logFile(filePath);
         switchToMainWindow();
         return filePath;
+    }
+
+    public String downloadCVwithHTTP() {
+        return PdfUtilities.downloadFile(TestConstants.WEB_PAGE_URL + "/images/georgeveropouloscv.pdf");
     }
 
 

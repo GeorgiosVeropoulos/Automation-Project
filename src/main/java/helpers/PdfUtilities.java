@@ -2,15 +2,23 @@ package helpers;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
+import constants.TestConstants;
 import lombok.extern.log4j.Log4j2;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.testng.Assert;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Log4j2
 public class PdfUtilities {
@@ -24,6 +32,7 @@ public class PdfUtilities {
     public static String download() {
         String filePath = null;
         String url = WebDriverRunner.getWebDriver().getCurrentUrl();
+        log.info("URL to download file was: " + url);
         try {
             File file = Selenide.download(url);
             filePath = file.getPath();
@@ -50,5 +59,51 @@ public class PdfUtilities {
         String pdfContent = getTextFromPdf(pdfFilePath);
         Assert.assertTrue(pdfContent.contains(value));
 
+    }
+
+    public static String downloadFile(String buttonUrl) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        URI uri = null;
+        try {
+            uri = new URI(buttonUrl);
+        } catch (URISyntaxException uriSyntaxException) {
+            log.error(uriSyntaxException.getMessage());
+        }
+        HttpGet httpGet = new HttpGet(uri);
+
+        try {
+            HttpResponse response = httpClient.execute(httpGet);
+            InputStream inputStream = response.getEntity().getContent();
+
+            // Create directory if it doesn't exist
+            log.info("File will be downloaded in: " + TestConstants.DOWNLOADS_FOLDER);
+            Path directory = Path.of(TestConstants.DOWNLOADS_FOLDER);
+            Files.createDirectories(directory);
+
+            // Generate file name based on URL
+
+            String fileName = System.currentTimeMillis() + buttonUrl.substring(buttonUrl.lastIndexOf('/') + 1) ;
+            String filePath = directory  + File.separator + fileName;
+            log.info("FilePath is : " + filePath);
+            // Create file output stream to save the downloaded file
+            OutputStream outputStream = new FileOutputStream(filePath);
+
+            // Copy input stream to output stream
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            // Close streams
+            outputStream.close();
+            inputStream.close();
+            httpClient.close();
+
+            return filePath;
+        } catch (IOException ioException) {
+            log.error(ioException.getMessage());
+            return "";
+        }
     }
 }
