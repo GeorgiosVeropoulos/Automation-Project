@@ -90,7 +90,7 @@ public class TestBase {
             log.info(setColor(resultString, Color.WHITE));
         } else {
             test.get().pass("Test passed");
-            log.info(setColor(resultString, Color.GREEN));
+            log.info(setColor(resultString + getExtentTest().getStatus().toString().toUpperCase(), Color.GREEN));
         }
         logScreenShot();
         extent.flush();

@@ -14,7 +14,6 @@ public class C2_NameOfWebPageTest extends TestBase {
         logStep("Test name of web page", "context message right below?");
         page.mainPage.waitForPageLoaded();
         String title = Selenide.title();
-        getSoftAssert().assertTrue(false);
         assertTrue(title.contains("Georgios Veropoulos"));
         logStep("Finish", "");
     }
