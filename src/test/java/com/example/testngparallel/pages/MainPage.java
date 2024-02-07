@@ -29,7 +29,7 @@ public class MainPage extends Page {
 
     private SelenideElement bottomIcons = $(By.xpath("//section//ul[@class = 'icons']"));
 
-    private SelenideElement cvBtn = $(By.xpath("(//ul[@class = 'actions']//li)[1]"));
+    private SelenideElement cvBtn = $(By.xpath("(//ul[@class = 'actions']//li)[1]//a"));
 
 
     public MainPage waitForPageLoaded() {
@@ -80,7 +80,7 @@ public class MainPage extends Page {
     }
 
     public String downloadCVwithHTTP() {
-        return PdfUtilities.downloadFile(TestConstants.WEB_PAGE_URL + "/images/georgeveropouloscv.pdf");
+        return PdfUtilities.downloadFile(cvBtn);
     }
 
 

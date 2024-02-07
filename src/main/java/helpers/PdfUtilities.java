@@ -1,6 +1,7 @@
 package helpers;
 
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import constants.TestConstants;
 import lombok.extern.log4j.Log4j2;
@@ -61,9 +62,10 @@ public class PdfUtilities {
 
     }
 
-    public static String downloadFile(String buttonUrl) {
+    public static String downloadFile(SelenideElement button) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         URI uri = null;
+        String buttonUrl = button.getAttribute("href");
         try {
             uri = new URI(buttonUrl);
         } catch (URISyntaxException uriSyntaxException) {
