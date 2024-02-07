@@ -1,9 +1,22 @@
 {
-  "urls": [
-    "https://twitter.com/theRealBugatsa",
-    "https://www.facebook.com/giorgossperanyxta",
-    "https://www.instagram.com/giorgosvero/",
-    "https://www.linkedin.com/in/george-veropoulos/",
-    "https://github.com/GeorgiosVeropoulos"
+  "twitter": [
+    "https://twitter.com/",
+    "theRealBugatsa"
+  ],
+  "facebook": [
+    "https://www.facebook.com/",
+    "giorgossperanyxta"
+  ],
+  "instagram": [
+    "https://www.instagram.com/",
+    "georgeveropoulos"
+  ],
+  "github": [
+    "https://github.com/",
+    "GeorgiosVeropoulos"
+  ],
+  "linkedin": [
+    "https://www.linkedin.com/",
+    "george-veropoulos"
   ]
 }

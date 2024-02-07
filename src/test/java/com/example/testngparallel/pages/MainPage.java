@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class MainPage extends Page {
 
@@ -28,6 +29,13 @@ public class MainPage extends Page {
     private SelenideElement moreInforWorkingOnBtn = $(By.id("more-info-working-on"));
 
     private SelenideElement bottomIcons = $(By.xpath("//section//ul[@class = 'icons']"));
+
+    private SelenideElement bottomTwitterBtn = $(By.id("bottom_twitter"));
+    private SelenideElement bottomFacebookBtn = $(By.id("bottom_facebook"));
+    private SelenideElement bottomInstagramBtn = $(By.id("bottom_instagram"));
+    private SelenideElement bottomGithubBtn = $(By.id("bottom_github"));
+    private SelenideElement bottomLinkedinBtn = $(By.id("bottom_linkedin"));
+
 
     private SelenideElement cvBtn = $(By.xpath("(//ul[@class = 'actions']//li)[1]//a"));
 
@@ -103,6 +111,42 @@ public class MainPage extends Page {
         for (String url : urls) {
             assertTrue(visitedUrl.contains(url), "verify " + url + " is contained in visited urls: " + visitedUrl);
         }
+        return this;
+    }
+
+    private void verifyURLContainsValues(SelenideElement elementToBeClicked, List<String> values) {
+        click(elementToBeClicked);
+        switchToChildWindow();
+        String visitedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
+        Sleeper.sleepInSeconds(2);
+        switchToMainWindow();
+        for (String value : values) {
+            assertTrue(visitedUrl.contains(value), visitedUrl + " should contain " + value + " but DIDN'T");
+        }
+    }
+
+    public MainPage checkBottomTwitterBtnGoToCorrectLink(List<String> values) {
+        verifyURLContainsValues(bottomTwitterBtn, values);
+        return this;
+    }
+
+    public MainPage checkBottomFacebookBtnGoToCorrectLink(List<String> values) {
+        verifyURLContainsValues(bottomFacebookBtn, values);
+        return this;
+    }
+
+    public MainPage checkBottomInstagramBtnGoToCorrectLink(List<String> values) {
+        verifyURLContainsValues(bottomInstagramBtn, values);
+        return this;
+    }
+
+    public MainPage checkBottomGithubBtnGoToCorrectLink(List<String> values) {
+        verifyURLContainsValues(bottomGithubBtn, values);
+        return this;
+    }
+
+    public MainPage checkBottomLinkedinBtnGoToCorrectLink(List<String> values) {
+        verifyURLContainsValues(bottomLinkedinBtn, values);
         return this;
     }
 

@@ -20,8 +20,12 @@ public class C1_VerifyLinksWorkInInfoSectionTest extends TestBase {
     public void verifyLinksWorkInInfoSectionTest() {
         logMessage("Test mainPage search");
         page.loadPage.goToMainPage();
-        assertTrue(true, "true");
-//        page.mainPage.checkBottomIconsGoToCorrectLinks((List<String>) data.get("urls"));
+        page.mainPage
+                .checkBottomTwitterBtnGoToCorrectLink((List<String>) data.get("twitter"))
+                .checkBottomFacebookBtnGoToCorrectLink((List<String>) data.get("facebook"))
+                .checkBottomInstagramBtnGoToCorrectLink((List<String>) data.get("instagram"))
+                .checkBottomGithubBtnGoToCorrectLink((List<String>) data.get("github"))
+                .checkBottomLinkedinBtnGoToCorrectLink((List<String>) data.get("linkedin"));
     }
 
 }
