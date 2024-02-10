@@ -5,12 +5,15 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Log4j2
 public class DataManager {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
     /**
      * Reads the values of the json file with the same name as the Test
      * and assigns them into a Map.
@@ -26,6 +29,33 @@ public class DataManager {
         }
         return map;
     }
+
+    /**
+     * Get the {@code List<String>} from the data provided by the usage of a key.
+     * @param data the json data to be provided.
+     * @param key the key we want to use as a {@code List<String>}.
+     * @return a new {@code List<String>}.
+     */
+    public static List<String> getListOfStrings(Map<?, ?> data, String key) {
+        Object value = data.get(key);
+        List<String> returnList = new ArrayList<>();
+        if (value instanceof List<?>) {
+            for (Object obj : (List<?>) value) {
+                if (obj instanceof String) {
+                    returnList.add((String) obj);
+                } else {
+                    log.warn("For key:" + key + " value ->" + obj + " was not a string! will convert it.");
+                    returnList.add(String.valueOf(obj));
+                }
+            }
+        } else {
+            log.error("For key:" + key + " -> value was not a List check .json file.");
+            throw new RuntimeException();
+        }
+        return returnList;
+    }
+
+
 
     private static String getCallingClass() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();

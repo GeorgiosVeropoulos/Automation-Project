@@ -1,0 +1,14 @@
+{
+  "main" : [
+    "About Me",
+    "My Work",
+    "Worked At",
+    "Info"
+  ],
+  "generic": [
+    "Design",
+    "Tools",
+    "Games",
+    "Info"
+  ]
+}

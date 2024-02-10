@@ -1,15 +1,12 @@
 package com.example.testngparallel.pages;
 
-import browser.Element;
 import com.codeborne.selenide.*;
 import com.example.testngparallel.pages.page.Page;
-import constants.TestConstants;
 import helpers.PdfUtilities;
 import helpers.Sleeper;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,26 +15,25 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class MainPage extends Page {
 
-    private SelenideElement pTitle = $(By.id("title"));
-    private SelenideElement aboutMeNavBtn = $(By.id("about-me"));
-    private SelenideElement myWorkNavBtn = $(By.id("my-work"));
+    private final SelenideElement pTitle = $(By.id("title"));
+    private final SelenideElement aboutMeNavBtn = $(By.id("about-me"));
+    private final SelenideElement myWorkNavBtn = $(By.id("my-work"));
 
-    private Element myWorkElement = new Element(By.id("my-work"));
-    private SelenideElement workedAtNavBtn = $(By.id("worked-at"));
-    private SelenideElement infoNavBtn = $(By.id("info"));
+    private final SelenideElement workedAtNavBtn = $(By.id("worked-at"));
+    private final SelenideElement infoNavBtn = $(By.id("info"));
 
-    private SelenideElement moreInforWorkingOnBtn = $(By.id("more-info-working-on"));
+    private final SelenideElement moreInforWorkingOnBtn = $(By.id("more-info-working-on"));
 
-    private SelenideElement bottomIcons = $(By.xpath("//section//ul[@class = 'icons']"));
+    private final SelenideElement bottomIcons = $(By.xpath("//section//ul[@class = 'icons']"));
 
-    private SelenideElement bottomTwitterBtn = $(By.id("bottom_twitter"));
-    private SelenideElement bottomFacebookBtn = $(By.id("bottom_facebook"));
-    private SelenideElement bottomInstagramBtn = $(By.id("bottom_instagram"));
-    private SelenideElement bottomGithubBtn = $(By.id("bottom_github"));
-    private SelenideElement bottomLinkedinBtn = $(By.id("bottom_linkedin"));
+    private final SelenideElement bottomTwitterBtn = $(By.id("bottom_twitter"));
+    private final SelenideElement bottomFacebookBtn = $(By.id("bottom_facebook"));
+    private final SelenideElement bottomInstagramBtn = $(By.id("bottom_instagram"));
+    private final SelenideElement bottomGithubBtn = $(By.id("bottom_github"));
+    private final SelenideElement bottomLinkedinBtn = $(By.id("bottom_linkedin"));
 
-
-    private SelenideElement cvBtn = $(By.xpath("(//ul[@class = 'actions']//li)[1]//a"));
+    private final ElementsCollection navigationBtns = $$(By.xpath("//*[@id = 'nav']//a"));
+    private final SelenideElement cvBtn = $(By.xpath("(//ul[@class = 'actions']//li)[1]//a"));
 
 
     public MainPage waitForPageLoaded() {
@@ -52,8 +48,7 @@ public class MainPage extends Page {
     }
 
     public MainPage clickMyWorkNavBtn() {
-//        click(myWorkNavBtn);
-        myWorkElement.shouldBe(Condition.visible).click();
+        click(myWorkNavBtn);
         waitForScrollingToFinish();
         return this;
     }
@@ -93,9 +88,9 @@ public class MainPage extends Page {
 
 
 
-    public MainPage clickMoreInforWorkingOnBtn() {
+    public GenericPage navigateToGenericPage() {
         click(moreInforWorkingOnBtn);
-        return this;
+        return new GenericPage();
     }
 
     public MainPage checkBottomIconsGoToCorrectLinks(List<String> urls) {
@@ -121,7 +116,7 @@ public class MainPage extends Page {
         Sleeper.sleepInSeconds(2);
         switchToMainWindow();
         for (String value : values) {
-            assertTrue(visitedUrl.contains(value), visitedUrl + " should contain " + value + " but DIDN'T");
+            assertTrue(visitedUrl.contains(value), visitedUrl + " should contain " + value);
         }
     }
 
@@ -147,6 +142,14 @@ public class MainPage extends Page {
 
     public MainPage checkBottomLinkedinBtnGoToCorrectLink(List<String> values) {
         verifyURLContainsValues(bottomLinkedinBtn, values);
+        return this;
+    }
+
+    public MainPage checkNavigationBtnsNames(List<String> btnNames) {
+        List<String> navBtnsTexts = navigationBtns.texts();
+        for (String btnName : btnNames) {
+            Assert.assertTrue(navBtnsTexts.contains(btnName));
+        }
         return this;
     }
 

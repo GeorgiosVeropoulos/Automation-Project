@@ -2,7 +2,6 @@ package com.example.testngparallel.tests;
 
 import com.codeborne.selenide.Selenide;
 import com.example.testngparallel.testbase.TestBase;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 

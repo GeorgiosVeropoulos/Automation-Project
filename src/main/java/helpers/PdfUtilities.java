@@ -49,9 +49,9 @@ public class PdfUtilities {
             PDFTextStripper textStripper = new PDFTextStripper();
             return textStripper.getText(document);
         } catch (IOException e) {
+            log.info("Pdf text coulnd't be loaded return empty String!");
             log.warn(e.getMessage());
         }
-        log.info("Pdf text coulnd't be loaded return empty String!");
         return "";
     }
 
@@ -82,9 +82,8 @@ public class PdfUtilities {
             Path directory = Path.of(TestConstants.DOWNLOADS_FOLDER);
             Files.createDirectories(directory);
 
-            // Generate file name based on URL
-
-            String fileName = System.currentTimeMillis() + buttonUrl.substring(buttonUrl.lastIndexOf('/') + 1) ;
+            // Generate a uniqueName for the file
+            String fileName = "file_" + System.currentTimeMillis() + ".pdf" ;
             String filePath = directory  + File.separator + fileName;
             log.info("FilePath is : " + filePath);
             // Create file output stream to save the downloaded file
