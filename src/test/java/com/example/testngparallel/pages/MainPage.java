@@ -83,7 +83,10 @@ public class MainPage extends Page {
     }
 
     public String downloadCVwithHTTP() {
-        return PdfUtilities.downloadFile(cvBtn);
+        String filePath = PdfUtilities.downloadFile(cvBtn);
+        logFile(filePath);
+        return filePath;
+
     }
 
 

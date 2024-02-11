@@ -62,6 +62,12 @@ public class PdfUtilities {
 
     }
 
+    /**
+     * Download the file if the element provided contains a valide href.
+     * @param button provided this button redirects us to a valid URL
+     *               where we can get a file like pdf/txt etc.
+     * @return the file path that the downloaded file was saved.
+     */
     public static String downloadFile(SelenideElement button) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         URI uri = null;
@@ -75,30 +81,28 @@ public class PdfUtilities {
 
         try {
             HttpResponse response = httpClient.execute(httpGet);
-            InputStream inputStream = response.getEntity().getContent();
+            String filePath = "";
+            try (InputStream inputStream = response.getEntity().getContent()) {
+                // Create directory if it doesn't exist
+                log.info("File will be downloaded in: " + TestConstants.DOWNLOADS_FOLDER);
+                Path directory = Path.of(TestConstants.DOWNLOADS_FOLDER);
+                Files.createDirectories(directory);
 
-            // Create directory if it doesn't exist
-            log.info("File will be downloaded in: " + TestConstants.DOWNLOADS_FOLDER);
-            Path directory = Path.of(TestConstants.DOWNLOADS_FOLDER);
-            Files.createDirectories(directory);
-
-            // Generate a uniqueName for the file
-            String fileName = "file_" + System.currentTimeMillis() + ".pdf" ;
-            String filePath = directory  + File.separator + fileName;
-            log.info("FilePath is : " + filePath);
-            // Create file output stream to save the downloaded file
-            OutputStream outputStream = new FileOutputStream(filePath);
-
-            // Copy input stream to output stream
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
+                // Generate a uniqueName for the file
+                String fileName = "file_" + System.currentTimeMillis() + ".pdf" ;
+                filePath = directory  + File.separator + fileName;
+                log.info("FilePath is : " + filePath);
+                // Create file output stream to save the downloaded file
+                try (OutputStream outputStream = new FileOutputStream(filePath)) {
+                    // Copy input stream to output stream
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                }
             }
-
             // Close streams
-            outputStream.close();
-            inputStream.close();
             httpClient.close();
 
             return filePath;

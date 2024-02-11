@@ -1,12 +1,13 @@
 package com.example.testngparallel.pages;
 
-import com.codeborne.selenide.WebDriverRunner;
 import com.example.testngparallel.pages.page.Page;
+
+import static constants.TestConstants.WEB_PAGE_URL;
 
 public class LoadPage extends Page {
 
 
     public void goToMainPage() {
-        openURL("https://www.georgeveropoulos.com/");
+        openURL(WEB_PAGE_URL);
     }
 }

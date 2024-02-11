@@ -75,7 +75,7 @@ public class TestRailListener implements ITestListener {
      * @return returns the {@code ID} of the Test as an int.
      */
     private int getTestCaseId(String className) {
-        Pattern pattern = Pattern.compile("C(\\d+)_");
+        Pattern pattern = Pattern.compile("C(\\d+)_"); //this will select the number between C and _ from the TestName!
         Matcher matcher = pattern.matcher(className);
         if (matcher.find()) {
             return Integer.parseInt(matcher.group(1));
