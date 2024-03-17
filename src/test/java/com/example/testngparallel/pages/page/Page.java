@@ -1,17 +1,22 @@
 package com.example.testngparallel.pages.page;
 
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.*;
 import com.example.testngparallel.assertionutils.AssertionUtils;
 import com.example.testngparallel.testbase.TestBase;
 import helpers.Sleeper;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.codeborne.selenide.CollectionCondition.*;
+import static constants.TestConstants.SHORT_TIMEOUT;
+import static java.time.Duration.ofSeconds;
 
 @Log4j2
 public class Page extends AssertionUtils {
@@ -31,12 +36,14 @@ public class Page extends AssertionUtils {
     }
 
 
-
-
+    /**
+     * <h3>Click method that waits for the element to be clickable.</h3>
+     * <p>Will wait a maximum of the {@code timeout.short} set in .properties.</p>
+     * @param element to be clicked!
+     */
     protected void click(SelenideElement element) {
-        element.shouldBe(Condition.visible, Duration.ofSeconds(10))
-                .click();
-        log(element + " clicked!");
+        element.click(ClickOptions.withTimeout(Duration.ofSeconds(SHORT_TIMEOUT)));
+        log.info("Element: " + element + " clicked!" );
     }
 
     public void waitForScrollingToFinish() {

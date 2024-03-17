@@ -2,16 +2,23 @@ package com.example.testngparallel.pages;
 
 import com.codeborne.selenide.*;
 import com.example.testngparallel.pages.page.Page;
+import constants.TestConstants;
 import helpers.PdfUtilities;
 import helpers.Sleeper;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static constants.TestConstants.*;
+import static java.time.Duration.ofSeconds;
 
 public class MainPage extends Page {
 
@@ -151,7 +158,7 @@ public class MainPage extends Page {
     public MainPage checkNavigationBtnsNames(List<String> btnNames) {
         List<String> navBtnsTexts = navigationBtns.texts();
         for (String btnName : btnNames) {
-            Assert.assertTrue(navBtnsTexts.contains(btnName));
+            Assert.assertTrue(navBtnsTexts.contains(btnName), "List should contain " + btnName);
         }
         return this;
     }

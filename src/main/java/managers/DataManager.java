@@ -1,6 +1,7 @@
 package managers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import exceptions.AutomationException;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
@@ -50,7 +51,7 @@ public class DataManager {
             }
         } else {
             log.error("For key:" + key + " -> value was not a List check .json file.");
-            throw new RuntimeException();
+            throw new AutomationException();
         }
         return returnList;
     }
@@ -60,7 +61,7 @@ public class DataManager {
     private static String getCallingClass() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         if (stackTrace.length < 3) {
-            throw new RuntimeException("Unable to determine calling class");
+            throw new AutomationException("Unable to determine calling class");
         }
         // the class calling this will always be the 4 element in the stackTrace
         // if this changes is because we call something else in betweeen the following methods
