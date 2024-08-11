@@ -1,22 +1,23 @@
 package com.example.testngparallel.tests;
 
+import com.example.testngparallel.pages.base.WebTestBase;
 import com.example.testngparallel.testbase.TestBase;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
-public class C3_NavigationToAllTest extends TestBase {
+public class C3_NavigationToAllTest extends WebTestBase {
 
     @BeforeMethod
     public void setUp() {
-        logMessage("this was before the Test Started!");
+        logInfo("this was before the Test Started!");
 
     }
 
 
     @Test(groups = {"navigation","all"})
     public void navigationToAllTools() {
-        logMessage("Test mainPage navigationToAllTools");
+        logInfo("Test mainPage navigationToAllTools");
         page.loadPage.goToMainPage();
 
         logStep("Step 1", "Navigate to My Work");

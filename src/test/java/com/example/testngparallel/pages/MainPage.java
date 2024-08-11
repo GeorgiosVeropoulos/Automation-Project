@@ -7,7 +7,9 @@ import helpers.PdfUtilities;
 import helpers.Sleeper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
+import org.testng.reporters.jq.Main;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -25,22 +27,18 @@ public class MainPage extends Page {
     private final SelenideElement pTitle = $(By.id("title"));
     private final SelenideElement aboutMeNavBtn = $(By.id("about-me"));
     private final SelenideElement myWorkNavBtn = $(By.id("my-work"));
-
     private final SelenideElement workedAtNavBtn = $(By.id("worked-at"));
     private final SelenideElement infoNavBtn = $(By.id("info"));
-
     private final SelenideElement moreInforWorkingOnBtn = $(By.id("more-info-working-on"));
-
     private final SelenideElement bottomIcons = $(By.xpath("//section//ul[@class = 'icons']"));
-
     private final SelenideElement bottomTwitterBtn = $(By.id("bottom_twitter"));
     private final SelenideElement bottomFacebookBtn = $(By.id("bottom_facebook"));
     private final SelenideElement bottomInstagramBtn = $(By.id("bottom_instagram"));
     private final SelenideElement bottomGithubBtn = $(By.id("bottom_github"));
     private final SelenideElement bottomLinkedinBtn = $(By.id("bottom_linkedin"));
-
     private final ElementsCollection navigationBtns = $$(By.xpath("//*[@id = 'nav']//a"));
     private final SelenideElement cvBtn = $(By.xpath("(//ul[@class = 'actions']//li)[1]//a"));
+
 
 
     public MainPage waitForPageLoaded() {
@@ -114,7 +112,7 @@ public class MainPage extends Page {
             switchToMainWindow();
         }
         for (String url : urls) {
-            assertTrue(visitedUrl.contains(url), "verify " + url + " is contained in visited urls: " + visitedUrl);
+            reporter.assertTrue(visitedUrl.contains(url), "verify " + url + " is contained in visited urls: " + visitedUrl);
         }
         return this;
     }
@@ -126,7 +124,7 @@ public class MainPage extends Page {
         Sleeper.sleepInSeconds(2);
         switchToMainWindow();
         for (String value : values) {
-            assertTrue(visitedUrl.contains(value), visitedUrl + " should contain " + value);
+            reporter.assertTrue(visitedUrl.contains(value), visitedUrl + " should contain " + value);
         }
     }
 
@@ -158,7 +156,7 @@ public class MainPage extends Page {
     public MainPage checkNavigationBtnsNames(List<String> btnNames) {
         List<String> navBtnsTexts = navigationBtns.texts();
         for (String btnName : btnNames) {
-            Assert.assertTrue(navBtnsTexts.contains(btnName), "List should contain " + btnName);
+            reporter.assertTrue(navBtnsTexts.contains(btnName), "List should contain " + btnName);
         }
         return this;
     }

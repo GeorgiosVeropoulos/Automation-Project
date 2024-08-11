@@ -1,13 +1,13 @@
 package com.example.testngparallel.tests;
 
-import com.example.testngparallel.testbase.TestBase;
+import com.example.testngparallel.pages.base.WebTestBase;
 import managers.DataManager;
 import org.testng.annotations.*;
 
 import java.util.List;
 import java.util.Map;
 
-public class C1_VerifyLinksWorkInInfoSectionTest extends TestBase {
+public class C1_VerifyLinksWorkInInfoSectionTest extends WebTestBase {
 
     private  List<String> twitterValues;
     private  List<String> facebookValues;
@@ -26,10 +26,11 @@ public class C1_VerifyLinksWorkInInfoSectionTest extends TestBase {
 
     }
 
-    @Test(groups = {"mainPage", "all", "testRail"}, description = "")
+    @Test(groups = {"mainPage", "all", "testRail", "par"}, description = "")
     public void verifyLinksWorkInInfoSectionTest() {
-        logMessage("Test mainPage search");
+        logInfo("Test mainPage search");
         page.loadPage.goToMainPage();
+
         page.mainPage
                 .checkBottomTwitterBtnGoToCorrectLink(twitterValues)
                 .checkBottomFacebookBtnGoToCorrectLink(facebookValues)

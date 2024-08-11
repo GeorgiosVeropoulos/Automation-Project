@@ -2,7 +2,7 @@ package com.example.testngparallel.pages.page;
 
 
 import com.codeborne.selenide.*;
-import com.example.testngparallel.assertionutils.AssertionUtils;
+import com.example.testngparallel.Reporter;
 import com.example.testngparallel.testbase.TestBase;
 import helpers.Sleeper;
 import lombok.extern.log4j.Log4j2;
@@ -11,18 +11,18 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.codeborne.selenide.CollectionCondition.*;
 import static constants.TestConstants.SHORT_TIMEOUT;
 import static java.time.Duration.ofSeconds;
 
 @Log4j2
-public class Page extends AssertionUtils {
+public class Page {
 
-    public void log(String message) {
-        TestBase.logMessage(message);
+    // The reporter for the current executed Test.
+    public Reporter reporter;
+
+    public Page() {
+        reporter = TestBase.reporters.get();
     }
 
     public void logFile(String filePath) {
@@ -32,7 +32,7 @@ public class Page extends AssertionUtils {
 
     public void openURL(String url) {
         WebDriverRunner.getWebDriver().get(url);
-        log("go to " + url);
+        log.info("go to {}", url);
     }
 
 
@@ -52,7 +52,7 @@ public class Page extends AssertionUtils {
             Sleeper.sleepInMillis(500L);
             long currentScrollPos = (long) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return window.scrollY;");
             if (currentScrollPos == initialScrollPos) {
-                log("scrolling was done!");
+                log.info("scrolling was done!");
                 break;
             }
             initialScrollPos = currentScrollPos;
@@ -66,5 +66,9 @@ public class Page extends AssertionUtils {
     public void switchToMainWindow() {
         Selenide.closeWindow();
         Selenide.switchTo().window(0);
+    }
+
+    public WebElement getElement(By by) {
+        return WebDriverRunner.getWebDriver().findElement(by);
     }
 }

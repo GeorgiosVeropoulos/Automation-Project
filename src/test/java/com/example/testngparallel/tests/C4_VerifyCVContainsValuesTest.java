@@ -1,10 +1,11 @@
 package com.example.testngparallel.tests;
 
+import com.example.testngparallel.pages.base.WebTestBase;
 import com.example.testngparallel.testbase.TestBase;
 import helpers.PdfUtilities;
 import org.testng.annotations.Test;
 
-public class C4_VerifyCVContainsValuesTest extends TestBase {
+public class C4_VerifyCVContainsValuesTest extends WebTestBase {
 
 
     @Test(groups = {"mainPage", "all"})

@@ -1,5 +1,6 @@
 package com.example.testngparallel.tests;
 
+import com.example.testngparallel.pages.base.WebTestBase;
 import com.example.testngparallel.testbase.TestBase;
 import managers.DataManager;
 import org.testng.annotations.BeforeMethod;
@@ -7,7 +8,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Map;
 
-public class C5_VerifyNavigationBtnNamesInAllPagesTest extends TestBase {
+public class C5_VerifyNavigationBtnNamesInAllPagesTest extends WebTestBase {
 
     private List<String> main;
 

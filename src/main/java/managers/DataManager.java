@@ -45,12 +45,12 @@ public class DataManager {
                 if (obj instanceof String) {
                     returnList.add((String) obj);
                 } else {
-                    log.warn("For key:" + key + " value ->" + obj + " was not a string! will convert it.");
+                    log.warn("For key:{} value ->{} was not a string! will convert it.", key, obj);
                     returnList.add(String.valueOf(obj));
                 }
             }
         } else {
-            log.error("For key:" + key + " -> value was not a List check .json file.");
+            log.error("For key:{} -> value was not a List check .json file.", key);
             throw new AutomationException();
         }
         return returnList;
